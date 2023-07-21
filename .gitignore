@@ -1,0 +1,15 @@
+venve/
+TestRuns/
+TestRuns2/
+TestRuns3/
+EMR/__pycache__/
+EMR/emr/__pycache__/
+EMR/emr/encoding/__pycache__/
+EMR/emr/stats/__pycache__/
+EMR/emr/ea/__pycache__/
+EMR/emr/configuration/__pycache__/
+EMR/emr/controller/__pycache__/
+backup/
+unity_builds/linux_build/
+unity_builds/
+exp0/
