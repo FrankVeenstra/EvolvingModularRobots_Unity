@@ -82,10 +82,12 @@ def _test_innervation_direct_encoding_with_custom_controller():
 
     
 def _test_unity_sims_evaluation(cfg, headless : bool = True):
-    cfg['environment']['simulator_to_use'] = 'sims'
+    cfg['environment']['simulator_to_use'] = 'cube'
     modules_to_use = configuration_handler.modules_to_use(cfg)
 
     path = cfg['experiment']['executable_path']
+    cfg['control']['number_of_outputs_per_module'] = '1'
+	
     print(f"opening: {path}")
     for i in range(10):
         individual = graph_grammar.GraphGrammar(PhaseCoupledOscillator, modules_to_use, cfg)
@@ -96,7 +98,8 @@ def _test_unity_sims_evaluation(cfg, headless : bool = True):
 def _test_unity_modular_robot_evaluation(cfg, headless : bool = True):
     cfg['environment']['simulator_to_use'] = 'modular_robot'
     modules_to_use = configuration_handler.modules_to_use(cfg)
-
+    cfg['control']['number_of_outputs_per_module'] = '1'
+	
     path = cfg['experiment']['executable_path']
     print(f"opening: {path}")
     for i in range(10):
@@ -108,6 +111,8 @@ def _test_unity_paleobot_evaluation(cfg, headless : bool = True):
     cfg['environment']['simulator_to_use'] = 'paleobot'
     modules_to_use = configuration_handler.modules_to_use(cfg)
     path = cfg['experiment']['executable_path']
+    cfg['control']['number_of_outputs_per_module'] = '5'
+	
     print(f"opening: {path}")
     for i in range(10):
         individual = graph_grammar.GraphGrammar(PhaseCoupledOscillator,modules_to_use, cfg)
@@ -134,12 +139,10 @@ def _test_deap_mutlithreaded(cfg, headless : bool):
 		run_number = 0)
     ea.run(cfg,5)
 
-
+    0
 def _test_recording_and_playback(cfg, headless = True):
     np.random.seed(1)
     random.seed(4)
-
-
     n_tests = 4
 
     path = cfg['experiment']['executable_path']
@@ -154,7 +157,7 @@ def _test_recording_and_playback(cfg, headless = True):
         eval.env.reset()
         json = eval.channel.json_recording_of_individual
         print(f"Evaluating playback of random graphgrammar individual {i}")
-        eval.playback_recording_individual(individual, json,   path, n_steps = 10,scene_number_to_load = int(cfg['experiment']['scene_number']))
+        eval.playback_recording_individual(individual, json,   path, n_steps = 100,scene_number_to_load = int(cfg['experiment']['scene_number']))
     eval.env.reset()
     eval.close_env()
 

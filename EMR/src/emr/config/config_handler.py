@@ -10,12 +10,15 @@ class ModuleInformation:
 def modules_to_use(config, emerge = True):
     # Populates a dictionary based on the modules to use
 	modulesToUseDictionary = dict()
-	if config['environment']['simulator_to_use'] == "sims":
-		modulesToUseDictionary.update({"SimsCube":ModuleInformation("SimsCube", 3, True)})
+	config['control']['number_of_outputs_per_module'] = '1'
+
+	if config['environment']['simulator_to_use'] == "cube":
+		modulesToUseDictionary.update({"CubePrefab":ModuleInformation("CubePrefab", 3, True)})
 		config['experiment']['scene_number'] = '2'
 	elif config['environment']['simulator_to_use'] ==  "paleobot":
 		modulesToUseDictionary.update({"TriloSegment": ModuleInformation("TrilobyteSegment", 1, True)})
 		config['experiment']['scene_number'] = '3'
+		config['control']['number_of_outputs_per_module'] = '5'
 	elif config['environment']['simulator_to_use'] == "modular_robot":
 		if (emerge):
 			modulesToUseDictionary.update({"EmergeModule":ModuleInformation("EmergeModule", 3, True)})
@@ -132,13 +135,13 @@ def make_config(experiment_nr:int = 0,
 	
 	# override a few entries based on simulator to use
 	if (simulator_to_use != None):
-		if (simulator_to_use == 'sims'):
-			config['environment']['modules_to_use'] = 'SimsCube'
+		if (simulator_to_use == 'cube'):
+			config['environment']['modules_to_use'] = 'CubePrefab'
 			config['experiment']['scene_number'] = "2"
 		elif(simulator_to_use == "paleobot"):
 			config['environment']['modules_to_use'] = 'TriloSegment'
 			config['experiment']['scene_number'] = "3"		
-			config['control']['number_of_outputs_per_module'] = '4'
+			config['control']['number_of_outputs_per_module'] = '5'
 	
 	# === Visualization ===
 	config['visualization'] = {}

@@ -156,6 +156,8 @@ def evaluate_individual_in_simulation(robot_graph, created_module_keys, n_steps 
         raise ValueError(f"too many modules created in the environment. Should be limited to {maximum_number_of_modules_allowed}")
 
     max_number_of_actions = action_size
+    penalty = 0.0
+    penalty_at_step = 50
 
     # contorller_to_key_dict = dict()
     # for c in controller_list:
@@ -171,7 +173,6 @@ def evaluate_individual_in_simulation(robot_graph, created_module_keys, n_steps 
                 sensory_inputs[0][i] = obs.obs[0][0][i]
             else:
                 sensory_inputs[0][i] = 0.0
-        
         graph_utility.forward_pass(robot_graph,controller_list)
         graph_utility.step_update_controllers(controller_list,sensory_inputs,actions,delta_time)
 
@@ -194,6 +195,9 @@ def evaluate_individual_in_simulation(robot_graph, created_module_keys, n_steps 
         index = list(obs.agent_id_to_index)
         if (len(index)> 0):
             try:
+                if (j == penalty_at_step):
+                    penalty = obs.reward[0]
+
                 fitness = obs.reward[0]
                 #print(fitness)
                 #fitness = obs[index[0]][0][0][0]
@@ -203,9 +207,9 @@ def evaluate_individual_in_simulation(robot_graph, created_module_keys, n_steps 
                 pass
         env.step()
     if (debug):
-        print("[Python]: fitness = ",fitness)
-    
-    return fitness
+        print("[Python]: fitness = ",fitness, " with penalty ", penalty)
+            
+    return fitness - penalty
 
 def evaluate_individual(ind, executable_path : str, scene_number_to_load : int = 1, n_duplicates = 1, n_steps : int = 500, 
                         time_step : float = 0.01, no_graphics : bool = False, editor_mode : bool = False, debug : bool = False, record : bool = False) -> float:
@@ -224,6 +228,9 @@ def evaluate_individual(ind, executable_path : str, scene_number_to_load : int =
         ns = decentralized_controller.innervate_modules(robot_graph)
         # Reset the environment and make the robot
         created_module_keys = create_individual(env,channel,robot_graph=robot_graph, debug = debug, record = record)
+        if (len(created_module_keys) <= 1):
+            ind.fitness = -1
+            return -1
         # Step through the simulation for the given number of steps 
         fitness = evaluate_individual_in_simulation(robot_graph = robot_graph,created_module_keys = created_module_keys, n_steps = n_steps, delta_time = time_step)
         if (record):
@@ -248,6 +255,7 @@ def playback_recording_individual(ind, json_animation_of_individual : str, execu
         channel.send_string(f"Playback,{json_animation_of_individual}")
         # Reset the environment and make the robot
         created_module_keys = create_individual(env,channel,robot_graph=robot_graph, debug = debug)
+       
         # Step through the simulation for the given number of steps 
         fitness = evaluate_individual_in_simulation(robot_graph = robot_graph,created_module_keys = created_module_keys, n_steps = n_steps, delta_time = time_step)
         channel.send_string(f"Done")
