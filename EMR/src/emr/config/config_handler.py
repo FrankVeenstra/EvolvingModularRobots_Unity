@@ -50,7 +50,7 @@ def make_config(experiment_nr:int = 0,
 	config['experiment']['experiment_path'] = experiment_path
 	config['experiment']['save_files_prefix'] = ''
 	config['experiment']['seed'] = str(duplicate_nr)
-	config['experiment']['executable_path'] = "./"	
+	config['experiment']['executable_path'] = "./EMR_Executable/EvolvingModularRobots"	
 	config['experiment']['scene_number'] = "1"
 
 	# === Placedholder for environmental settings ===
