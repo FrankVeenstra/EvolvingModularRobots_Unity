@@ -16,10 +16,10 @@ def main():
     cfg['environment']['simulator_to_use'] = 'paleobot' # also known as trilobyte
     config.config_handler.print_config(cfg)
     encoding_reference, controller_reference, evaluation_function_reference = config.config_utility.get_encoding_controller_and_evaluation_from_config(cfg)
-    config.config_handler.save_config(cfg['experiment']['experiment_path'] + "config.cfg", cfg)
     modules_to_use = config.config_handler.modules_to_use(cfg)
     ea = evolution.deap_interface.EvolutionaryAlgorithm(evaluation_function_reference, cfg, encoding_reference, controller_reference, modules_to_use, n_cores = 1)
     ea.initialize(cfg)
+    config.config_handler.save_config(cfg['experiment']['experiment_path'] + "config.cfg", cfg)
     
     for _ in tqdm(range(1), "Generation: "):
         ea.epoch()
