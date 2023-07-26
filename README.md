@@ -8,7 +8,7 @@ Evolving Modular Robots (EMR) is a package that can be used for evolving modular
 
 This package comes with three examples: (1) a modular robot approach (2) evolving virtual creatures that are like Karl Sim's seminal work on Evolving Virtual Creatures, and (3) a paleobot robot that resembles a trilobite. Robots are created by interpreting a `blueprint` (or `genome`). The python package of this project produces these blueprints. These blueprints are sent to Unity over a `side-channel` and interpreted into robots (ml agents) in Unity. To construct a robot in Unity, the graphs sent to Unity need to contain information of the type of module that should be constructed. One can change and incorporate new modules easilty using the `robot_module` helper scripts. The three robot examples in the project can be used as test robots and serve as illustrative examples of how users can co-optimize the body and brain of robots with Unity using evolutionary algorithms.
 
-The purpose of this package is to have a testbed for analyzing graph-based agents can be evolved in simulation environments. Here are some projects evaluating the effect of [springs](link), [encodings](link), [morphological protection](link) and [decentralized control schemes](link) on evolving modular robots.
+The purpose of this package is to have a testbed for analyzing graph-based agents can be evolved in simulation environments. Here are some projects evaluating the effect of [springs(will be published soon](link), [encodings(will be published soon)](link), [morphological protection(will be published soon](link) and [decentralized control schemes](https://direct.mit.edu/isal/proceedings/isal2022/34/49/112308) on evolving modular robots.
 
 # Content
 
@@ -141,7 +141,7 @@ When running this script, the evolutionary algorithm will by default save the
 
 One can load evolved modular robots through : WIP
 
-When loading an individual that was optimized on a machine different from the current one, the performance might differ. If the different machine was a HPC solution without a graphical user interface, one can still record the individual in the simulation. The record function returns a JSON recording file that can be associated with the individual. The contents of this JSON recording can be send over the `side-channel` which will prompt the executable to play the recording instead of running the physics simulator. Any inputs sent from Python to the robot during this replay will be ignored.
+When loading an individual that was optimized on a machine different from your current one, the performance might differ. If the different machine was a HPC solution without a graphical user interface, one can still record the individual in the simulation. The record function returns a JSON recording file that can be associated with the individual. The contents of this JSON recording can be send over the `side-channel` which will prompt the executable to play the recording instead of running the physics simulator. Any inputs sent from Python to the robot during this replay will be ignored.
 
 Example: WIP
 
@@ -155,11 +155,13 @@ For more functionality examples, have a look at the `ExampleScripts` folder.
 
 ## 4 Making your own modules
 
-To make your own modules you should make your own executable using the Unity Editor. The robot package can be imported in the editor as explained in section [running in the editor](*Running-in-the-Unity-Editor). Once the package is imported, navigate to the EvolvingModularRobots folder. Here you will find all the files used that made the Unity Builds. In order to make your own modules, have a look at a `prefab` such as the `EmergeModule`. This prefab contains one script called Module which is a helper script that allows Unity to easily assemble a robot from modules containing this script.
+To make your own modules you should make your own executable using the Unity Editor. The robot package can be imported in the editor as explained in section [running in the editor](*Running-in-the-Unity-Editor). Once the package is imported, navigate to the EvolvingModularRobots folder. Here you will find all the files used that made the Unity `Builds`. In order to make your own modules, have a look at a `prefab` such as the `EmergeModule` (originally derived from the [Èmerge](https://www.frontiersin.org/articles/10.3389/frobt.2021.699814/full modular robot system by Moreno and Faiña). This prefab contains one script called Module which is a helper script that allows Unity to easily assemble a robot from modules containing this script.
 
 ### Module script
 
-The `Module` script contains a few references to connections sites, joints, and colliders. The emerge module has for example 3 connection site(CS)s (where child nodes can attach to), and one parent connection site (CSP). The emerge module furthermore contains two colliders with a configurable joint in between. The first collider contains a joint representing the servo motor of this module and the second collider contains a joint that will be used to attach the module to another joint. Lastly, the module contains a game object called `CollisionChecker`. This object is used to check whether the module overlaps with any other object once it is created (using a box collider with `IsTrigger = True`; note that this collider is positioned slightly above the CSP [connection site parent]). To get started creating your own module, it is easiest to simply duplicate the emerge module and alter it to how you see fit.
+The `Module` C# script contains a few references to connections sites, joints, and colliders. The emerge module has for example 3 connection sites (CSs; the location of new child modules), and one parent connection site (CSP). The emerge module furthermore contains two colliders with a configurable joint in between. The first collider contains a joint representing the servo motor of this module and the second collider contains a joint that will be used to attach the module to another joint. Lastly, the module contains a game object called `CollisionChecker`. This object is used to check whether the module overlaps with any other object once it is created (using a box collider with `IsTrigger = True`; note that this collider is positioned slightly above the CSP [connection site parent]). To get started creating your own module, it is easiest to simply duplicate the emerge module and alter it to how you see fit.
+
+
 
 ### Adding a module to the ModularRobot script
 
@@ -291,4 +293,4 @@ Since this project uses the ML-Agents Toolkit, you can find how the creators of 
 
 ## Feedback and Support
 
-Feel free to reach out to us if you'd like some feedback or support! 
+Feel free to reach out to us if you'd like some feedback or support!
