@@ -30,7 +30,7 @@ def custom_mutation(individual, mutation_rate : float = 0.1, sigma : float = 0.1
     individual.mutate(mutation_rate, sigma, controller_mutation_rate)
     
 class EvolutionaryAlgorithm:
-    def __init__(self, evaluation_function, config, individual_reference, controller_reference, modules_to_use, n_cores : int = 0, run_number : int = 0):
+    def __init__(self, evaluation_function, config, individual_reference, controller_reference, modules_to_use, n_cores : int = 0, run_number : int = 0, number_of_evaluation_steps = 10):
         # storing individual reference to get access to methods pertaining to the class
         self.individual_reference = individual_reference
 
@@ -52,7 +52,7 @@ class EvolutionaryAlgorithm:
         number_of_evaluation_steps = int(config['environment']['evaluation_steps'])
         # ::::::::: Create Toolbox from DEAP ::::::::::
         toolbox = base.Toolbox()
-        toolbox.register("individual",individual_reference, controller_reference,modules_to_use, config)
+        toolbox.register("individual", individual_reference, controller_reference, modules_to_use, config)
         toolbox.register("population", tools.initRepeat, list, toolbox.individual)
         toolbox.register("evaluate",evaluation_function, 
                executable_path=config['experiment']['executable_path'], 

@@ -13,3 +13,5 @@ backup/
 unity_builds/linux_build/
 unity_builds/
 exp0/
+__pycache__/
+EMR_Executable/
