@@ -4,11 +4,11 @@
 
 ## Overview
 
-Evolving Modular Robots (EMR) is a package that can be used for evolving modular robots in the Unity gaming engine. It uses the ML-Agent's toolkit for creating and evaluating robots in Unity. The current project only supports evolving tree-based (chain-based) robots, meaning that robot components have a hierarchical dependency. 
+Evolving Modular Robots (EMR) is a package that can be used for evolving modular robots in the Unity game engine. It uses the [ML-Agent's](https://github.com/Unity-Technologies/ml-agents) toolkit for creating and evaluating robots in Unity. The current project supports evolving tree-based (chain-based) robots, meaning that robot components have a hierarchical dependency. 
 
-This package comes with three examples: (1) a modular robot approach (2) evolving virtual creatures that are like Karl Sim's seminal work on Evolving Virtual Creatures, and (3) a paleobot robot that resembles a trilobite. Robots are created by interpreting a `blueprint` (or `genome`). The python package of this project produces these blueprints. These blueprints are sent to Unity over a []`side-channel` and interpreted into robots (ml agents) in Unity. To construct a robot in Unity, the graphs sent to Unity need to contain information of the type of module that should be constructed. One can change and incorporate new modules easilty using the `robot_module` helper scripts. The three robot examples in the project can be used as test robots and serve as illustrative examples of how users can co-optimize the body and brain of robots with Unity using evolutionary algorithms.
+This package comes with three examples: (1) a modular robot approach (2) evolving virtual creatures that are like Karl Sim's seminal work on Evolving Virtual Creatures, and (3) a paleobot robot that resembles a trilobite. Robots are created by interpreting a `blueprint` (or `genome`). The python package of this project produces these blueprints. These blueprints are sent to Unity over a [`side-channel`](https://docs.unity3d.com/Packages/com.unity.ml-agents@1.0/api/Unity.MLAgents.SideChannels.SideChannel.html) and interpreted into robots in Unity. To construct a robot in Unity, the graphs sent to Unity need to contain information of the type of modules that should be constructed. If you would like to use different modules, you will need to open the Unity Package in the editor. The three robot examples in the project can be used as test robots and serve as illustrative examples of how users can co-optimize the body and brain of robots with Unity using evolutionary algorithms.
 
-The purpose of this package is to have a testbed for analyzing graph-based agents can be evolved in simulation environments. Here are some projects evaluating the effect of [compliance](https://direct.mit.edu/isal/proceedings/isal2023/35/76/116931), [encodings](link), [morphological protection(will be published soon](link) and [decentralized control schemes](https://direct.mit.edu/isal/proceedings/isal2022/34/49/112308) on evolving modular robots.
+The purpose of this project is to have a testbed for analyzing graph-based agents can be evolved in simulation environments. Here are some projects evaluating the effect of [compliance](https://direct.mit.edu/isal/proceedings/isal2023/35/76/116931), [encodings](link) and [decentralized control schemes](https://direct.mit.edu/isal/proceedings/isal2022/34/49/112308) on evolving modular robots.
 
 # Content
 
@@ -24,15 +24,15 @@ The purpose of this package is to have a testbed for analyzing graph-based agent
 
 ## 1 Prerequisites
 
-This project requires `Python v3.7 <= v3.9` (3.9.16 for a specific version that works) and `mlagents v0.29.0`. (Note that currently the project is sensitive to using packages of different versions).
+This project requires Python version >= `3.10.1`, <=`3.10.12` and `mlagents v1.08`.
 
-You can use this project either with precompiled executables, or you can make your own executables using the Unity Editor. You can use the precompiled executables if you don't want to change anything in the simulator and would like to use one of the example environments. Precompiled executables can be download from: [https://www.mn.uio.no/ifi/english/research/groups/robin/events/Tutorials/Tutorial%20-%20Artificial%20Life%20-%202023/unity-builds/](https://www.mn.uio.no/ifi/english/research/groups/robin/events/Tutorials/Tutorial%20-%20Artificial%20Life%20-%202023/unity-builds/). The executables can be run on windows and linux (macOS is being tested).
+You can use this project either with precompiled executables, or you can make your own executables using the Unity Editor. You can use the precompiled executables if you don't want to change anything in the simulator and would like to use one of the example environments. Precompiled executables can be download from: [https://www.mn.uio.no/ifi/english/research/groups/robin/events/Tutorials/Tutorial%20-%20Artificial%20Life%20-%202023/unity-builds/](https://www.mn.uio.no/ifi/english/research/groups/robin/events/Tutorials/Tutorial%20-%20Artificial%20Life%20-%202023/unity-builds/). The executables can be run on windows and linux (macOS can have issues).
 
-If the user would like to change details of the simulator (e.g. to adjust the physics, change the environment or change the modules) or by downloading and installing the package for Unity. The latter approach requires `Unity version 2022` and `Unity MLAgents version 2.0.1`. The package used for this project can be found in the unity_package folder of this repository.
+To adjust the physics, environment or modules, the UnityPackage folder contains a unity package that can be [imported into Unity](https://docs.unity3d.com/Manual/AssetPackagesImport.html). The latter approach requires `Unity version >= 2022` and `Unity MLAgents version 1.08`. 
 
 ## 2 Installation
 
-This project can be run through (1) the Unity `editor`, or (2) a standalone application that can simulate robots without editor functionality. The first approach should be used for developing and debugging any algorithms in Unity, while the second can be used for deploying experiments using the Unity package.
+This project can be run through (1) a standalone application that can simulate robots without editor functionality, or (2) the Unity `editor`. The first approach can be used for testing the evolutionary algorithms. The second approach should be used for developing and debugging environments/robot modules in Unity. 
 
 ---
 
@@ -57,9 +57,50 @@ The executable is used from the python project and you will need to supply the p
 ---
 
 ### Option 2: Running in the Unity Editor
-If you would like to change the simulator either by adding/changing modules, or experimenting with new algorithms, you import the Unity package in the Unity Editor. The Unity editor can be downloaded from the official Unity website and Unity MLAgents can be downloaded through the package manager. To use the modules designed for this project, you can download and import the `EvolvingModularRobotsVanilla.unitypackage` file located in the `UnityPackage` folder of this repository.
+If you would like to change the simulator either by adding/changing modules, or experimenting with new algorithms, you can import the Unity package in the Unity Editor. The Unity editor can be downloaded from the official Unity website and Unity MLAgents can be downloaded through the package manager. To use the modules designed for this project, you can download and [import](https://docs.unity3d.com/Manual/AssetPackagesImport.html) the `EvolvingModularRobots.unitypackage` file located in the `UnityPackage` folder of this repository.
 
-In the Unity editor, you can import the package by going to `Assets->Import Package`. After importing the package, you can test the project by opening one of the following `scenes`: (1) `ModularRobotsScene` (2) `SimsScene` (3) `Paleobot`. You can press the `Play` button and press `R` on the keyboard to create a few random robots. You can build a standalone application for this package that can be adjusted how the user sees fit by building it in Unity (`ctrl + b`). For windows this will automatically create a `.exe` that you can load from Python. (linux and macos build support might need to be downloaded). To run the script in editor mode, you'll have to specify this in the config file by changing the `[run_in_editor_mode]` entry which is set to `0` (False) by default.  simply run the script, and then press play in Unity. If all went well, you should see random modular robots pop up. What is happening is that there is now an evol utionary algorithm sending blueprints to Unity that are interpreted as modular robots.
+In the Unity editor, you can import the package by going to `Assets->Import Package`. After importing the package, you can test the project by opening one of the following `scenes`: (1) `ModularRobotsScene` (2) `SimsScene` (3) `Paleobot`. You can press the `Play` button and press `R` on the keyboard to create a few random robots. 
+
+#### Adding Scenes to the Build Index
+
+You can switch scenes by pressing 1,2, and 3 on the keyboard but you'll have to add scenes to the build index of Unity in order to do this. Below is an image of the Scenes that are used for this project.
+
+![alt text](build_index.png)
+
+> Note: Physics Layer will have to be assigned in order for the Unity package to work in the editor.
+
+#### Setting up layers in Unity
+
+By default, 4 additional layers are being used by this package for collision detection between robot parts. In order to fix any collision issues using the package, you will have to make sure that there are 4 extra layers in Unity ([Layers in UNity](https://docs.unity3d.com/Manual/LayerBasedCollision.html))
+
+You can name the layers whatever you like as long as you have assigned something to layers 6-9: 
+
+![alt text](layers.png)
+
+Layer 9 is used by the `cube` robot and by default collision between modules should be turned off because modules are allowed to pass through one another. In order to switch off collision between modules on the 9th layer, create a collision matrix similar to the image below.
+
+![alt text](collision_matrix.png)
+
+> Note: If you don't see a floor in your simulation, you might have set the scene list incorrectly.
+
+#### Running in editor mode
+
+ To run the script in editor mode, you'll have to specify this in the config file by changing the `[run_in_editor_mode]` entry which is set to `0` (False) by default. You can add the second line in the code below to any of the example scripts to run in editor mode.
+ > 	
+ ```python
+ # Make a config file
+ cfg =  config.config_handler.make_config()
+ # Set the environment variable to run in the editor 
+ cfg['environment']['run_in_editor_mode'] = "1"
+ ```
+
+When you run a Python script in editor mode, after set up, the program should wait until you press play in Unity. If all went well, you should see random modular robots pop up. The Python application is now sending blueprints to Unity that are interpreted as robots. 
+
+
+### Building a standalone application from the package
+
+ You can build a standalone application for this package that can be adjusted how the user sees fit by building it in Unity (`ctrl + b`). For windows this will automatically create a `.exe` that you can load from Python. (linux and macos build support might need to be downloaded). 
+ 
 
 ## 3 Getting Started
 
@@ -107,7 +148,7 @@ from tqdm import tqdm
 # The following three references will be registered in the evolutionary algorithm
 
 # specify the encoding to use (reference to object)
-encoding_reference = encoding.LSystem.GraphGrammar
+encoding_reference = encoding.graph_grammar.GraphGrammar
 # specify the controller to use (reference to object)
 controller_reference = controller.phase_coupled_oscillator.PhaseCoupledOscillator
 # specify the evaluation functin to use (reference to function)
@@ -118,8 +159,8 @@ if __name__ == "__main__":
     # the default config does not know where you downloaded or build any Unity executables. The .exe or .x86 extensions of the builds should not be included. The path might need to be absolute.
     cfg['experiment']['executable_path'] = "PATH_TO_THE_EXECUTABLE"
     # Save and load the config files with the helper functions commented out below. 
-    #config.config_handler.save_config("config.cfg", cfg) 
-    #cfg = config.config_handler.load_config("config.cfg") 
+    # config.config_handler.save_config("config.cfg", cfg) 
+    # cfg = config.config_handler.load_config("config.cfg") 
 
     # Fetching the modules that can be used 
     modules_to_use = config.config_handler.modules_to_use(cfg)
