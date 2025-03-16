@@ -61,7 +61,7 @@ The executable is used from the python project and you will need to supply the p
 ### Option 2: Running in the Unity Editor
 If you would like to change the simulator either by adding/changing modules, or experimenting with new algorithms, you can import the Unity package in the Unity Editor. The Unity editor can be downloaded from the official Unity website and Unity MLAgents can be downloaded through the package manager. To use the modules designed for this project, you can download and [import](https://docs.unity3d.com/Manual/AssetPackagesImport.html) the `EvolvingModularRobots.unitypackage` file located in the `UnityPackage` folder of this repository.
 
-In the Unity editor, you can import the package by going to `Assets->Import Package`. After importing the package, you can test the project by opening one of the following `scenes`: (1) `ModularRobotsScene` (2) `SimsScene` (3) `Paleobot`. You can press the `Play` button and press `R` on the keyboard to create a few random robots. 
+In the Unity editor, you can import the package by going to `Assets->Import Package`. After importing the package, you can test the project by opening one of the following `scenes`: (1) `ModularRobotsScene` (2) `SimsScene` (3) `Paleobot`. You can press the `Play` button and press `R` on the keyboard to create a few random robots. In order to develop your own robot parts you will need to set up a few more things that are explained in see section 4.
 
 
 
@@ -309,7 +309,6 @@ If you are using this package for your research you can cite any of our previous
     year = {2023},
     url = {https://github.uio.no/frankvee/EvolvingModularRobots_Unity}
 }
-
 ```
 
 Since this project uses the ML-Agents Toolkit, you can find how the creators of this toolkit would like to be referenced on their github page : [https://github.com/Unity-Technologies/ml-agents](https://github.com/Unity-Technologies/ml-agents)
