@@ -31,12 +31,10 @@ def _download_and_extract(link,downloaded_file_name,executable_dir):
     print("Set permissions to 777")
 
 def download(downloaded_file_name : str = "solution.zip", executable_dir :str = "./EMR_Executable"):
-
     if (platform.system() == 'Darwin'):
         print("Downloading executable for mac")
         link = "https://www.mn.uio.no/ifi/english/research/groups/robin/events/Tutorials/Tutorial%20-%20Artificial%20Life%20-%202023/unity-builds/macos_evolving_modular_robots_v001.zip" 
         _download_and_extract(link,downloaded_file_name, executable_dir)
-        
     elif (platform.system() == 'Linux'):
         print("Downloading executable for linux")
         link = "https://www.mn.uio.no/ifi/english/research/groups/robin/events/Tutorials/Tutorial%20-%20Artificial%20Life%20-%202023/unity-builds/linux_evolving_modular_robots_v001.zip" 

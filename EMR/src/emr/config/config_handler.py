@@ -7,7 +7,7 @@ class ModuleInformation:
         self.number_of_connection_sites = number_of_connection_sites
         self.hasController = hasController
 
-def modules_to_use(config, emerge = True):
+def modules_to_use(config, emerge : bool = True):
     # Populates a dictionary based on the modules to use
 	modulesToUseDictionary = dict()
 	config['control']['number_of_outputs_per_module'] = '1'

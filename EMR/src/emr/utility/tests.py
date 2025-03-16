@@ -138,8 +138,7 @@ def _test_deap_mutlithreaded(cfg, headless : bool):
 		graph_grammar.GraphGrammar, PhaseCoupledOscillator,modules_to_use, n_cores = 4, 
 		run_number = 0)
     ea.run(cfg,5)
-
-    0
+    
 def _test_recording_and_playback(cfg, headless = True):
     np.random.seed(1)
     random.seed(4)

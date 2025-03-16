@@ -14,6 +14,8 @@ def main():
     cfg['environment']['evaluation_steps'] = '500'
     cfg['experiment']['executable_path'] = "EMR_Executable/EvolvingModularRobots"
     cfg['environment']['simulator_to_use'] = 'modular_robot' # also known as trilobyte
+    cfg['environment']['run_in_editor_mode'] = '0'
+
     config.config_handler.print_config(cfg)
     encoding_reference, controller_reference, evaluation_function_reference = config.config_utility.get_encoding_controller_and_evaluation_from_config(cfg)
     modules_to_use = config.config_handler.modules_to_use(cfg)

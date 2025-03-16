@@ -14,8 +14,6 @@ from emr.controller import decentralized_controller
 import os
 
 GLOBAL_SOCKET_OFFSET = 400
-#RUN_IN_EDITOR_MODE = False
-#NO_GRAPHICS = False
 
 # singleton equivalent
 env = None
@@ -53,40 +51,11 @@ def get_env(no_graphics = False, editor_mode = True, path_to_unity_exec : str = 
             env = UnityEnvironment(seed = 12, side_channels=[channel],no_graphics = no_graphics, worker_id=0)
         else:
             worked_id = get_worker_id()
-            #print(f"Opening Unity at '{path_to_unity_exec}', will try to use socket {worked_id} ({worked_id})")
+            print(f"Opening Unity at '{path_to_unity_exec}', will try to use socket {worked_id} ({worked_id})")
             env = UnityEnvironment(file_name=path_to_unity_exec, seed = 12, side_channels=[channel],no_graphics = no_graphics, worker_id=worked_id)
         channel.send_string(f"Scene:,{scene_number_to_load}")
         env.reset()
     return env, channel    
-
-        # Old code. Keeping it here for a while        
-    #    if platform == "linux" or platform == "linux2":
-    #        if (editor_mode):
-    #            env = UnityEnvironment(seed = 12, side_channels=[channel],no_graphics = no_graphics, worker_id=worked_id)
-    #        else:
-    #            worked_id = get_worker_id()
-    #            print(f"Opening Unity, will try to use socket {worked_id} ({worked_id})")
-    #            env = UnityEnvironment(file_name=path_to_unity_exec, seed = 12, side_channels=[channel],no_graphics = no_graphics, worker_id=worked_id)
-    #    elif platform == "darwin":
-    #        if (editor_mode):
-    #            env = UnityEnvironment(seed = 12, side_channels=[channel],no_graphics = no_graphics) 
-    #        else:
-    #            env = UnityEnvironment(file_name=path_to_unity_exec, seed = 12, side_channels=[channel],no_graphics = no_graphics, worker_id=worked_id) 
-    #    else:
-    #        #print(f"Opening Unity, will try to use socket {pid + socket_number_offset + GLOBAL_SOCKET_OFFSET} ({pid}:{socket_number_offset}:{GLOBAL_SOCKET_OFFSET})")
-    #        if (editor_mode):
-    #            env = UnityEnvironment(seed = 12, side_channels=[channel],no_graphics = no_graphics) 
-    #        else:
-    #            env = UnityEnvironment(file_name=path_to_unity_exec, seed = 12, side_channels=[channel],no_graphics = no_graphics, worker_id=worked_id) 
-        
-    #    if (env != None):
-    #        print("Succesfully opened a new environment")
-    #    else:
-    #        print("Couldn't open a new Unity Environment")
-    #    print(f"Telling Unity to open scene number {scene_number_to_load}")
-    #    channel.send_string(f"Scene:,{scene_number_to_load}")
-    #    env.reset()
-    #return env, channel
 
 def close_env():
     global env
@@ -139,7 +108,7 @@ def create_individual(env,side_channel,robot_graph, debug = True, record = False
 
 import emr.encoding.robot_graph as graph_utility
     
-def evaluate_individual_in_simulation(robot_graph, created_module_keys, n_steps : int = 500, maximum_number_of_modules_allowed = 50, delta_time = 0.1,debug = False):
+def evaluate_individual_in_simulation(robot_graph, created_module_keys, n_steps : int = 500, maximum_number_of_modules_allowed = 50, delta_time = 0.1, debug : bool = False):
     fitness = -1
     # We assume there is only one individual in the simulation environment. 
     individual_name = list(env._env_specs)[0]
@@ -159,9 +128,6 @@ def evaluate_individual_in_simulation(robot_graph, created_module_keys, n_steps 
     penalty = 0.0
     penalty_at_step = 50
 
-    # contorller_to_key_dict = dict()
-    # for c in controller_list:
-    #    contorller_to_key_dict.update({c:})
     # should load scene and wait to receive string for individual
     for j in range(n_steps):
         obs,other = env.get_steps(individual_name)
@@ -175,21 +141,6 @@ def evaluate_individual_in_simulation(robot_graph, created_module_keys, n_steps 
                 sensory_inputs[0][i] = 0.0
         graph_utility.forward_pass(robot_graph,controller_list)
         graph_utility.step_update_controllers(controller_list,sensory_inputs,actions,delta_time)
-
-        # old version -------------------------:
-        ## Indexing of modules!
-        #for i,controller in enumerate(controller_list):
-        #    if (i >= maximum_number_of_modules_allowed):
-        #        if (j == 0):
-        #            print(f"too many modules created in the environment. Should be limited to {maximum_number_of_modules_allowed}")
-        #        break
-        #    if (controller.fixed):
-        #        action = controller.update(0.0)
-        #    else:
-        #        action = controller.update(0.1) * 1
-        #    actions[0,i] = action      
-        # -------------------------------------
-        # send actions
         
         env.set_action_for_agent(individual_name,0,ActionTuple(actions))
         index = list(obs.agent_id_to_index)
@@ -197,10 +148,7 @@ def evaluate_individual_in_simulation(robot_graph, created_module_keys, n_steps 
             try:
                 if (j == penalty_at_step):
                     penalty = obs.reward[0]
-
                 fitness = obs.reward[0]
-                #print(fitness)
-                #fitness = obs[index[0]][0][0][0]
                 #print("fitness", fitness);
             except:
                 print("Cannot get fitness")
@@ -218,7 +166,6 @@ def evaluate_individual(ind, executable_path : str, scene_number_to_load : int =
     global channel
     for _ in range(n_duplicates):
         # Get the singleton environment
-    
         env, channel = get_env(path_to_unity_exec=executable_path,scene_number_to_load=scene_number_to_load, no_graphics= no_graphics, editor_mode=editor_mode)
         if (record):
             # Tell Unity to record this individual

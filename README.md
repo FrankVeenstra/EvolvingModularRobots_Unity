@@ -1,6 +1,6 @@
 # EMR: Evolving Modular Robots - Unity
 
-![](image.png)
+![](overview.png)
 
 ## Overview
 
@@ -18,9 +18,11 @@ The purpose of this project is to have a testbed for analyzing graph-based agent
 
 [Getting Started](#3-Getting-Started)
 
-[Making your own modules](#4-Making-your-own-modules)
+[Running in the Unity Editor](#-4-Running-in-the-Unity-Editor)
 
-[Writing your own operators](#5-Writing-your-own-operators)
+[Making your own modules](#5-Making-your-own-modules)
+
+[Writing your own operators](#6-Writing-your-own-operators)
 
 ## 1 Prerequisites
 
@@ -61,46 +63,7 @@ If you would like to change the simulator either by adding/changing modules, or 
 
 In the Unity editor, you can import the package by going to `Assets->Import Package`. After importing the package, you can test the project by opening one of the following `scenes`: (1) `ModularRobotsScene` (2) `SimsScene` (3) `Paleobot`. You can press the `Play` button and press `R` on the keyboard to create a few random robots. 
 
-#### Adding Scenes to the Build Index
 
-You can switch scenes by pressing 1,2, and 3 on the keyboard but you'll have to add scenes to the build index of Unity in order to do this. Below is an image of the Scenes that are used for this project.
-
-![alt text](build_index.png)
-
-> Note: Physics Layer will have to be assigned in order for the Unity package to work in the editor.
-
-#### Setting up layers in Unity
-
-By default, 4 additional layers are being used by this package for collision detection between robot parts. In order to fix any collision issues using the package, you will have to make sure that there are 4 extra layers in Unity ([Layers in UNity](https://docs.unity3d.com/Manual/LayerBasedCollision.html))
-
-You can name the layers whatever you like as long as you have assigned something to layers 6-9: 
-
-![alt text](layers.png)
-
-Layer 9 is used by the `cube` robot and by default collision between modules should be turned off because modules are allowed to pass through one another. In order to switch off collision between modules on the 9th layer, create a collision matrix similar to the image below.
-
-![alt text](collision_matrix.png)
-
-> Note: If you don't see a floor in your simulation, you might have set the scene list incorrectly.
-
-#### Running in editor mode
-
- To run the script in editor mode, you'll have to specify this in the config file by changing the `[run_in_editor_mode]` entry which is set to `0` (False) by default. You can add the second line in the code below to any of the example scripts to run in editor mode.
- > 	
- ```python
- # Make a config file
- cfg =  config.config_handler.make_config()
- # Set the environment variable to run in the editor 
- cfg['environment']['run_in_editor_mode'] = "1"
- ```
-
-When you run a Python script in editor mode, after set up, the program should wait until you press play in Unity. If all went well, you should see random modular robots pop up. The Python application is now sending blueprints to Unity that are interpreted as robots. 
-
-
-### Building a standalone application from the package
-
- You can build a standalone application for this package that can be adjusted how the user sees fit by building it in Unity (`ctrl + b`). For windows this will automatically create a `.exe` that you can load from Python. (linux and macos build support might need to be downloaded). 
- 
 
 ## 3 Getting Started
 
@@ -182,13 +145,58 @@ When running this script, the evolutionary algorithm will by default save the
 
 When loading an individual that was optimized on a machine different from your current one, the performance might differ. If the different machine was a HPC solution without a graphical user interface, one can still record the individual in the simulation. The record function returns a JSON recording file that can be associated with the individual. The contents of this JSON recording can be send over the `side-channel` which will prompt the executable to play the recording instead of running the physics simulator. Any inputs sent from Python to the robot during this replay will be ignored.
 
-### 3.5 
+### 3.5 Example Scripts
 
 For more functionality examples, have a look at the `ExampleScripts` folder.
 
-## 4 Making your own modules
+### 3.6 Setting up the editor
 
-To make your own modules you should make your own executable using the Unity Editor. The robot package can be imported in the editor as explained in section [running in the editor](*Running-in-the-Unity-Editor). Once the package is imported, navigate to the EvolvingModularRobots folder. Here you will find all the files used that made the Unity `Builds`. In order to make your own modules, have a look at a `prefab` such as the `EmergeModule` (originally derived from the [Èmerge](https://www.frontiersin.org/articles/10.3389/frobt.2021.699814/full modular robot system by Moreno and Faiña). This prefab contains one script called Module which is a helper script that allows Unity to easily assemble a robot from modules containing this script.
+## 4 Running in the Unity Editor
+
+As mentioned in 2.2, to properly set up the editor you will need to (1) add scenes to the build index of Unity and (2) set up physics layers so everything in Unity works. 
+
+### 4.1 Adding Scenes to the Build Index
+
+You can switch scenes by pressing 1,2, and 3 on the keyboard but you'll have to add scenes to the build index of Unity in order to do this. Below is an image of the Scenes that are used for this project.
+
+![alt text](build_index.png)
+
+### 4.2 Setting up layers in Unity
+
+By default, this package requires you to set up 4 additional [layers](https://docs.unity3d.com/6000.1/Documentation/Manual/create-layers.html) that are used for collision detection between robot parts. When running in the editor, you will need to make sure that there are 4 extra layers in Unity as shown below.
+
+![alt text](layers.png)
+
+The name of the layers doesnæt matter as long as something is assigned to layers 6-9: 
+
+Layer 9 is used by the `cube` robot and by default collision between modules should be turned off since these modules are allowed to pass through one another. In order to switch off collision between modules on the 9th layer, find the [collision matrix](https://docs.unity3d.com/6000.1/Documentation/Manual/LayerBasedCollision.html) and set it similar to the image below.
+
+![alt text](collision_matrix.png)
+
+> Note: If you don't see a floor in your simulation, you might have set the scene list incorrectly.
+
+### 4.3 Running in editor mode
+
+ To run the script in editor mode, you'll have to specify this in the config file by changing the `[run_in_editor_mode]` entry which is set to `0` (False) by default. You can add the second line in the code below to any of the example scripts to run in editor mode.
+ > 	
+ ```python
+ # Make a config file
+ cfg =  config.config_handler.make_config()
+ # Set the environment variable to run in the editor 
+ cfg['environment']['run_in_editor_mode'] = "1"
+ ```
+
+When you run a Python script in editor mode, after set up, the program should wait until you press play in Unity. If all went well, you should see random modular robots pop up. The Python application is now sending blueprints to Unity that are interpreted as robots. 
+
+
+### 4.4 Building a standalone application from the package
+
+ You can build a standalone application for this package that can be adjusted how the user sees fit by building it in Unity (`ctrl + b`). For windows this will automatically create a `.exe` that you can load from Python. (linux and macos build support might need to be downloaded). 
+ 
+
+## 5 Making your own modules
+
+To make your own modules you should make your own executable using the Unity Editor. The robot package can be imported in the editor as explained in section [running in the editor](*Running-in-the-Unity-Editor). Once the package is imported, navigate to the EvolvingModularRobots folder. Here you will find all the files used that made the Unity `Builds`. In order to make your own modules, have a look at a `prefab` such as the `EmergeModule` (originally derived from the [Emerge](https://www.frontiersin.org/articles/10.3389/frobt.2021.699814/full) modular robot system by Moreno and Faiña) . This prefab contains one script called Module which is a helper script that allows Unity to easily assemble a robot from modules containing this script.
 
 ### Module script
 
@@ -215,7 +223,7 @@ modules_to_use_dictionary = dict()
 modules_to_use_dictionary.update({module_name:module_information_instance})
 ```
 
-## 5 Writing your own operators
+## 6 Writing your own operators
 
 When using the python package, a few references to classes have to be passed on to the evolutionary algorithm. These references can be replaced with anything but to ensure there will not be any errors, make sure the classes are inheriting from the respective abstract classes. E.g. if you would like to implement a different type of controller, make sure to inheret from the `AbstractController` class located in the controller folder in the emr package. The abstract classes will require you to implement a certain set of functions that ensures all everything can still work together.
 
@@ -285,7 +293,10 @@ Deap contains multi-objective evolutionary algorithms that can be utilized by re
 
 ## Collaborators
 
-This project was developed by Frank Veenstra and contributors Emma Stensby Nordstein, Kyrre Glette, Tobias Remman Paulsen, Mia-Kathrin Kvalsund, and Joergen Nordmoen. Mia-Kathrin's and Tobias' MSc. projects using this simulator can be found in : [TODO: add link](link). Emma Stensby's project evaluating springs when evolving modular robots : [TODO: add link](link). 
+This project was developed by Frank Veenstra and contributors Emma Stensby Nordstein, Kyrre Glette, Tobias Remman Paulsen, Mia-Kathrin Kvalsund, and Joergen Nordmoen. Some of their work you can find here: 
+* [Decentralized control schemes](https://www.duo.uio.no/handle/10852/103853?show=full)
+* [Compliance](https://direct.mit.edu/isal/proceedings/isal2023/35/76/116931)
+
 
 ## Referencing
 
@@ -305,4 +316,4 @@ Since this project uses the ML-Agents Toolkit, you can find how the creators of 
 
 ## Feedback and Support
 
-Feel free to reach out to us if you'd like some feedback or support!
+Feel free to reach out to us if you'd like some feedback or support! You can sent me an email at frank.veenstra(at)nord.no

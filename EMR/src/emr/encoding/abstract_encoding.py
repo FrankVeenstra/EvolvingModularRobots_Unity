@@ -7,7 +7,6 @@ class AbstractEncoding(ABC):
     def __init__(self):
         pass
 
-    
     # For generating random individuals
     @abstractmethod
     def random():
